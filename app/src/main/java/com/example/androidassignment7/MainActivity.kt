@@ -1,14 +1,17 @@
+
 package com.example.androidassignment7
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidassignment7.R
+
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.TextInputLayout
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,11 +36,19 @@ class MainActivity : AppCompatActivity() {
         expenseList = mutableListOf()
 
         // Initialize the RecyclerView
-        expenseAdapter = ExpenseAdapter(expenseList)
+        expenseAdapter = ExpenseAdapter(expenseList) { expense ->
+            // This block is executed when the "Show Details" button is clicked
+            val intent = Intent(this, ExpenseActivity::class.java).apply {
+                putExtra("expense_name", expense.name)
+                putExtra("expense_amount", expense.amount)
+            }
+            startActivity(intent)
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = expenseAdapter
 
-        // add expense button
+        // Add expense button click listener
         addExpenseButton.setOnClickListener {
             val expenseName = expenseNameEditText.text.toString()
             val expenseAmount = expenseAmountEditText.text.toString()
@@ -52,14 +63,17 @@ class MainActivity : AppCompatActivity() {
                     val newExpense = Expense(expenseName, amount)
                     expenseList.add(newExpense)
                     expenseAdapter.notifyItemInserted(expenseList.size - 1)
+
+                    // Clear the input fields
                     expenseNameEditText.text.clear()
                     expenseAmountEditText.text.clear()
+
+                    // Show success toast
                     Toast.makeText(this, "Expense added successfully", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    // Data class for Expense
     data class Expense(val name: String, val amount: Float)
 }

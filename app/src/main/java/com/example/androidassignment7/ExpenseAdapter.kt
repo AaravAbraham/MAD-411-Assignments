@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidassignment7.R
 
-class ExpenseAdapter(private val expenseList: MutableList<MainActivity.Expense>) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter(
+    private val expenseList: MutableList<MainActivity.Expense>,
+    private val onExpenseClicked: (MainActivity.Expense) -> Unit
+) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -21,10 +24,13 @@ class ExpenseAdapter(private val expenseList: MutableList<MainActivity.Expense>)
         holder.expenseName.text = expense.name
         holder.expenseAmount.text = "$${expense.amount}"
 
-        // Set click listener for delete button
         holder.deleteButton.setOnClickListener {
             expenseList.removeAt(position)
             notifyItemRemoved(position)
+        }
+
+        holder.showDetailsButton.setOnClickListener {
+            onExpenseClicked(expense)
         }
     }
 
@@ -34,5 +40,6 @@ class ExpenseAdapter(private val expenseList: MutableList<MainActivity.Expense>)
         val expenseName: TextView = itemView.findViewById(R.id.expense_name)
         val expenseAmount: TextView = itemView.findViewById(R.id.expense_amount)
         val deleteButton: Button = itemView.findViewById(R.id.delete_button)
+        val showDetailsButton: Button = itemView.findViewById(R.id.show_details_button)
     }
 }

@@ -20,7 +20,7 @@
             android:id="@+id/expense_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Expense Name"
+            android:hint="@string/enter_expense_name"
             android:importantForAccessibility="yes"
             android:contentDescription="Expense name input field"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expense_amount_input_layout"
-        app:layout_constraintVertical_bias="0.034" />
+        app:layout_constraintVertical_bias="0.088" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/expense_list_recycler_view"
